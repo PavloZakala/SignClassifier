@@ -1,5 +1,5 @@
 import pickle 
-from numpy import np
+import numpy as np
 
 def load_data(file):
     # Open 'pickle' file
