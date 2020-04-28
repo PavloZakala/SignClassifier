@@ -1,5 +1,6 @@
 import pickle 
 import numpy as np
+import math 
 
 def load_data(file):
     # Open 'pickle' file
@@ -26,3 +27,26 @@ def load_data(file):
         coords = d['coords']                        
        
     return input_data, target, sizes, coords
+
+def convert_to_grid(x_input):
+    N, H, W, C = x_input.shape
+    grid_size = int(math.ceil(math.sqrt(N)))
+    grid_height = H * grid_size + 1 * (grid_size - 1)
+    grid_width = W * grid_size + 1 * (grid_size - 1)
+    grid = np.zeros((grid_height, grid_width, C)) + 255
+    next_idx = 0
+    y0, y1 = 0, H
+    for y in range(grid_size):
+        x0, x1 = 0, W
+        for x in range(grid_size):
+            if next_idx < N:
+                img = x_input[next_idx]
+                low, high = np.min(img), np.max(img)
+                grid[y0:y1, x0:x1] = 255.0 * (img - low) / (high - low)
+                next_idx += 1
+            x0 += W + 1
+            x1 += W + 1
+        y0 += H + 1
+        y1 += H + 1
+
+    return grid
