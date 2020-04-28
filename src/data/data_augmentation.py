@@ -80,3 +80,5 @@ def equalize_training_dataset(x_train, y_train):
 
         x_train = np.append(x_train, np.array(x_temp), axis=0)
         y_train = np.append(y_train, np.array(y_temp), axis=0)
+
+    return x_train, y_train
